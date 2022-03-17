@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+
+const main = require('../lib/main.js');
+const pack = require('../package.json');
+const proc = require('child_process');
+const prog = require('commander');
+
+prog
+.version(pack.version)
+.option('-h, --help')
+.option('--serve [host:port]')
+
+// project-level options
+.option('--srcdir  <path>',    '',  'code')
+.option('--outdir  <path>',    '',  'dist')
+.option('--cpyext  <exts...>', '', ['.html'])
+.option('--plugins <plug...>', '', ['./sass'])
+
+// bundle-time options
+.option('--target <targetenv>')
+.option('--bundle')
+.option('--minify')
+.option('--sourcemap')
+
+// option-group aliases
+.option('--prod')
+.option('--dev')
+.action(() => {
+	const opts = prog.opts();
+	if (opts.help) return proc.spawnSync(
+		`man ${__dirname}/../man/esninja.1`, {
+		shell: 'bash',
+		stdio: 'inherit',
+	});
+	if (opts.prod) Object.assign(opts, {
+		serve:     opts['serve']  ?? false,
+		target:    opts['target'] ?? 'es2018',
+		bundle:    true,
+		minify:    true,
+		sourcemap: false,
+	});
+	if (opts.dev) Object.assign(opts, {
+		serve:     opts['serve']  ?? true,
+		target:    opts['target'] ?? 'esnext',
+		bundle:    true,
+		minify:    false,
+		sourcemap: true,
+	});
+	main(opts);
+})
+.parse();
+
