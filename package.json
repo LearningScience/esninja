@@ -1,0 +1,24 @@
+{
+	"name": "esninja",
+	"version": "0.0.0",
+	"main": "lib/main.js",
+	"directories": {
+		"bin": "bin",
+		"lib": "lib",
+		"man": "man"
+	},
+	"author": "Thomas Brierley",
+	"license": "MIT",
+	"description": "A faster way to use esbuild",
+	"keywords": [
+		"esbuild",
+		"bundler",
+		"cli"
+	],
+	"repository": "github:learningscience/esninja",
+	"dependencies": {
+		"commander": "^9",
+		"esbuild": "^0",
+		"sass": "^1"
+	}
+}
