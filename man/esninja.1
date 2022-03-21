@@ -10,7 +10,7 @@ esninja - a faster way to use esbuild
 
 .SH DESCRIPTION
 
-esninja makes using esbuild faster, simpler and cleaner by inferring entry points from <script> and <link> tags, using sensible asset loader defaults and maintaining separation between source and output files.
+esninja makes using esbuild faster, simpler and cleaner by inferring entry points from <script> and <link> tags, using sensible asset loader defaults, adding support for s/css @import using node_module names and maintaining separation between source and output files.
 
 Organise your project files freely and cohesively under a single source directory [--srcdir], which is automatically bundled together with npm modules into a single output directory [--outdir]. Additional unreferenced assets such as html are accommodated by [--cpyext] which selectively copies files between srcdir and outdir based on extension.
 
@@ -108,6 +108,12 @@ A comprehensive list of binary assets (media, fonts) are configured to use the "
 These are references to assets from within html e.g <img src=foo.png/>, or from js when not explicitly imported or required.
 
 These are invisible to esbuild. If they cannot be converted to explicit references, they can be accommodated by extending the [--cpyext] option to copy them from the srcdir to outdir, e.g "--cpyext .html .png".
+
+- @import for s/css node_modules
+
+By default, esbuild attempts to resolve @import rules against the "main" package.json field for installed node_modules. However many packages contain JavaScript, css and sass all at the same time. To accommodate this, the unofficial "style" (.css) and "sass" (.scss) fields have emerged, however at the time of writing nether esbuild nor any of the sass plugins supported these unofficial fields.
+
+esninja's built-in ./sass plugin adds support for these fields when resolving @import statements from both .scss and .css files. It is also careful to differentiate CSS node_module @imports inside of .scss files, which are bundled by esbuild rather than sass. This ensures asset references are correctly resolved relative to the imported file path (which differs from how sass resolves asset paths).
 
 .SH OPTIONS
 
