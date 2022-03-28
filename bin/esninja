@@ -14,7 +14,7 @@ prog
 .option('--srcdir  <path>',    '',  'code')
 .option('--outdir  <path>',    '',  'dist')
 .option('--cpyext  <exts...>', '', ['.html'])
-.option('--plugins <plug...>', '', ['./sass'])
+.option('--plugins <plug...>', '', ['./sass', './furl'])
 
 // bundle-time options
 .option('--target <targetenv>')
