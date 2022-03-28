@@ -10,11 +10,15 @@ esninja - a faster way to use esbuild
 
 .SH DESCRIPTION
 
-esninja makes using esbuild faster, simpler and cleaner by inferring entry points from <script> and <link> tags, using sensible asset loader defaults, adding support for s/css @import using node_module names and maintaining separation between source and output files.
+esbuild is a brilliantly fast and lean bundler. However it makes very few assumptions about projects and their assets, does not handle unreferenced assets, and has some rough edges around s/css node_module import compatibility. This increases setup friction, often resulting in build scripts with a tight coupling to project specific requirements and organisational constraints.
 
-Organise your project files freely and cohesively under a single source directory [--srcdir], which is automatically bundled together with npm modules into a single output directory [--outdir]. Additional unreferenced assets such as html are accommodated by [--cpyext] which selectively copies files between srcdir and outdir based on extension.
+esninja makes using esbuild simpler, faster and more complete by mitigating these effects. Usually making a script unnecessary for simple projects...
 
-The shorthand options --dev and --prod easily switch between serving with sourcemaps from memory for development; and building with minification into outdir for production without changing any other options.
+Entry points are automatically inferred from <script> and <link> tags, sensible "loader" assumptions are made, s/css node_module name imports are resolved in a more compatible way. A built-in mechanism for copying or serving unreferenced files is provided, allowing project files to be organised freely under a single source directory, maintaining separation between source and output.
+
+.SH EXAMPLE
+
+At it's simplest, esninja takes a --srcdir and --outdir, defaulting to ./code and ./dist. Various esbuild options are exposed via the CLI, however the following aliases are more convenient: --prod for production, builds into outdir; --dev for development, serves from memory. If you have any assets not imported by JS or referenced by CSS urls e.g an <img> src, use --cpyext, which will copy or serve those files along side the bundle e.g:
 
 .nf
 esninja --prod --cpyext .html .jpg
@@ -84,12 +88,6 @@ You can use any combination of options. For instance if you needed to debug mini
 Similarly if you needed to debug transpilation issues for a particular target environment you might want to use the following options:
 
 	esninja --serve --bundle --sourcemap --target=es2015
-
-- Understanding Why & How
-
-esbuild is a brilliantly fast and lean bundler. However it makes few assumptions about projects and their assets, and does not handle unreferenced assets. This increases setup friction, often resulting in build scripts with a tight coupling to project specific requirements, and tends to impose organisational constraints.
-
-esninja reduces these effects by inferring "entry points" from html tags, making sensible "loader" assumptions for referenced assets, and providing a built-in mechanism for copying or serving unreferenced files along side bundled files, which allows project files to be organised freely under a single source directory.
 
 - Implicit entry points
 
