@@ -18,7 +18,7 @@
 	"repository": "github:learningscience/esninja",
 	"dependencies": {
 		"commander": "^9",
-		"esbuild": "^0",
+		"esbuild": "~0.16",
 		"sass": "^1"
 	}
 }
